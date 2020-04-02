@@ -24,50 +24,69 @@ const sizeStyles = css`
     `}
 `;
 
-const StyledButton = styled.button`
-    /* 공통 스타일  */
-    display:inline-flex;
-    outline:none;
-    border:none;
-    border-radius:4px;
-    color:white;
-    font-weight:bold;
-    cursor: pointer;
-    padding-left:1rem;
-    padding-right:1rem;
-    /* 크기 */
-
-    ${sizeStyles}
-    /* height:2.25rem;
-    font-size:1rem; */
-    /* 색상 */
-    ${props => {
-        const color = props.theme.palette[props.color];
+const colorStyle = css`
+    ${({ theme, color }) => {
+        const selected = theme.palette[color];
         return css`
-            background: ${color};
+            background: ${selected};
             &:hover {
-                background:${lighten(0.1, color)};
+                background:${lighten(0.1, selected)};
             }
             &:active {
-                background:${darken(0.1, color)};
+                background:${darken(0.1, selected)};
             }
+            ${props => props.outline && css`
+                color: ${selected};
+                background:none;
+                border: 1px solid ${selected};
+                &:hover { 
+                    background: ${selected}; 
+                    color: white; 
+                }
+            `}
         `;
     }}
-    /* background:${props => props.theme.palette.blue};
-    &:hover {
-        background:${props => lighten(0.1, props.theme.palette.blue)};
-    }
-    &:active {
-        background:${props => darken(0.1, props.theme.palette.blue)};
-    } */
+`;
+const fullWidthStyle = css`
+    ${props => props.fullWidth && css`
+        width:100%;
+        justify-content:center;
+        & + & {
+            margin-left:0;
+            margin-top:1rem;
+        }
+    `}
+`;
+const StyledButton = styled.button`
+    /* 공통 스타일  */
+    display: inline - flex;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* 크기 */
+
+    ${ colorStyle}
+    ${ sizeStyles}
 
     & + & {
-        margin-left:1rem;
+    margin-left: 1rem;
     }
+    ${fullWidthStyle}
 `;
 
-function Button({ children, color, size, ...rest }) {
-    return <StyledButton color={color} size={size} {...rest}>{children}</StyledButton>;
+function Button({ children, color, size, outline, fullWidth, ...rest }) {
+    return <StyledButton
+        color={color}
+        size={size}
+        outline={outline}
+        fullWidth={fullWidth}
+        {...rest}>{children}
+    </StyledButton>;
 }
 
 Button.defaultProps = { color: "blue", size: "medium" };
