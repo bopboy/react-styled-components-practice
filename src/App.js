@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Button from './components/Button';
+import Dialog from './components/Dialog';
 
 const AppBlock = styled.div`
   width:512px;
@@ -21,6 +22,18 @@ const ButtonGroup = styled.div`
 `
 
 function App() {
+  const [dialog, setDialog] = useState(false);
+  const onClick = () => {
+    setDialog(true);
+  }
+  const onConfirm = () => {
+    console.log('yes');
+    setDialog(false);
+  }
+  const onCancel = () => {
+    console.log('no');
+    setDialog(false);
+  }
   return (
     <ThemeProvider theme={{ palette }}>
       <AppBlock>
@@ -39,6 +52,15 @@ function App() {
           <Button color="gray" fullWidth>BUTTON</Button>
           <Button size="large" color="pink" outline fullWidth>BUTTON</Button>
         </ButtonGroup>
+        <ButtonGroup>
+          <Button color="pink" size="large" onClick={onClick}>삭제</Button>
+        </ButtonGroup>
+        <Dialog
+          title="데이터 삭제" confirmText="YES"
+          onCancel={onCancel} onConfirm={onConfirm}
+          cancelText="NO" visible={dialog}>
+          Really?
+        </Dialog>
       </AppBlock>
     </ThemeProvider>
   );
